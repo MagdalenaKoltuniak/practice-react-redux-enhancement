@@ -5,11 +5,13 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { thunk } from 'redux-thunk';
 import { githubReducer } from './modules/github';
+import { stackoverflowReducer } from './modules/stackoverflow';
 
 import App from './components/App';
 
 const rootReducer = combineReducers({
 	github: githubReducer,
+	stackoverflow: stackoverflowReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
