@@ -2,6 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSoQuery, setSoSort, fetchStackOverflow } from './stackoverflow.actions';
 
+const options = {
+	date: (a, b) => b.creation_date - a.creation_date,
+	score: (a, b) => b.owner.reputation - a.owner.reputation,
+};
+
 const Stackoverflow = () => {
 	const dispatch = useDispatch();
 	const { query, questions, sortBy, loading, error } = useSelector(state => state.stackoverflow);
@@ -15,20 +20,11 @@ const Stackoverflow = () => {
 	};
 
 	const handleSearch = () => {
-		if (!query) return;
+		if (!query.trim()) return;
 		dispatch(fetchStackOverflow(query, sortBy));
 	};
 
-	const sortedQuestions = [...questions].sort((a, b) => {
-		if (sortBy === 'date') {
-			return b.creation_date - a.creation_date;
-		}
-
-		if (sortBy === 'score') {
-			return b.owner.reputation - a.owner.reputation;
-		}
-		return 0;
-	});
+	const sortedQuestions = [...questions].sort(options[sortBy]);
 
 	return (
 		<section>
